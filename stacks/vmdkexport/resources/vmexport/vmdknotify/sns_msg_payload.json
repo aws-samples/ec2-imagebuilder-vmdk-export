@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-east-1:284434744703:WmdkNotificationTopic-proserve-wp12-vmdk-export:9cd83808-8679-4494-a265-a431d57f1bcc",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "977c64e1-9952-507f-b534-3d3fcfc9b96a",
+                "TopicArn": "arn:aws:sns:us-east-1:284434744703:WmdkNotificationTopic-proserve-wp12-vmdk-export",
+                "Subject": null,
+                "Message": "12345abcde",
+                "Timestamp": "2021-10-11T15:12:27.767Z",
+                "SignatureVersion": "1",
+                "Signature": "eSdDm0EM3uTx0/YwmH6WCx1F+J0uztxL1KTjbUP9diAauHySjPnojeWfTf8PsP2BJxeIBkxtI18/ZXknUvpMs+12UkW7IwAeUqAikU5CGuj6CDgZn9hgavybWx6s1TJtO0qiDlU4e1ldom4RUpgpJ60VVB6enG8lRPP6pDi88frstDbNHAWHl9g8a1T1yY34/mjr0qbGvU5JFgqONqNpLg5VsX7HkEgI3BCOr0ZdqVtm5TACSIqhxe9QqGnX4Tg6uKhIfa1268s5G3KHh92SpgP0meW8DsScpWoCPCcOCJ9XwGvSt+ld6KZH3pnSaG2aoajzPrM61MhHRAFgSge6Hg==",
+                "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+                "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:284434744703:WmdkNotificationTopic-proserve-wp12-vmdk-export:9cd83808-8679-4494-a265-a431d57f1bcc",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}
