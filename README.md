@@ -1,9 +1,5 @@
 # ec2-imagebuilder-vmdk-export
 
-CDK stack that contains an event-driven approach to AMI creation, distribution and sharing as well as the exporting of the AMI to `vmdk` format. In addition, the project contains a CustomResource with Lambda function to allow the setting of the `targetAccountIds` attribute of the EC2 Image Builder AMI distribution settings which is not currently supported in CloudFormation or CDK.
-
----
-
 [EC2 Image Builder](https://aws.amazon.com/image-builder/) simplifies the building, testing, and deployment of Virtual Machine and container images for use on AWS or on-premises. Customers looking to create custom AMIs ([Amazon Machine Image](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)) or container images can leverage EC2 Image Builder to significantly reduce the effort of keeping images up-to-date and secure through its simple graphical interface, built-in automation, and AWS-provided security settings. 
 
 There are times, when customers may wish to have access to their custom AMIs in their on-premises environments. AWS provides the [VM Import/Export](https://docs.aws.amazon.com/vm-import/latest/userguide/what-is-vmimport.html) service which enables customers to import virtual machine (VM) images from their existing virtualization environment to Amazon EC2, and then export them back. The service enables the migration of applications and workloads to Amazon EC2, copying of a customer's VM image catalog to Amazon EC2, or the creation of a repository of VM images for backup and disaster recovery.
