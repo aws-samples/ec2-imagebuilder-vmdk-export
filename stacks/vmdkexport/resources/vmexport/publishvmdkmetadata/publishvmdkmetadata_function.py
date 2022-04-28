@@ -27,15 +27,8 @@ Below are some key details of the VDMK export process:
     * AMI Id: {{ params['ami_id'] }}
     * AMI Name: {{ params['ami_name'] }}
     * VMDK id: {{ params['vmdk_id'] }}
-    * S3 Image Path: {{ params['s3_image_path'] }}
 
-The VMDK image can be downloaded via the pre-signed S3 URL below using SignV4: 
-
-{{ params['s3_presigned_url'] }}
-
-This URL will be valid for 1 week.
-
-Additionally, the VMDK file can be downloaded from the AWS console at the following S3 Bucket path:
+The VMDK file can be downloaded from the AWS console at the following S3 Bucket path:
 
     {{ params['s3_image_path'] }}
 
@@ -47,23 +40,6 @@ def put_ssm_parameter(ssm_param_name: str, ssm_param_val: str):
     ssm_client = boto3.client('ssm')
     parameter = ssm_client.put_parameter(Name=ssm_param_name, Value=ssm_param_val, Type='String', Overwrite=True)
     return parameter['Version']
-
-def presign_url(bucket_name, object_name, expiration):
-    s3_client = boto3.client('s3')
-    try:
-        url = s3_client.generate_presigned_url(
-            'get_object',
-            Params={
-                'Bucket': bucket_name,
-                'Key': object_name
-            },
-            ExpiresIn=expiration
-        )
-    except ClientError as e:
-        logging.error(e)
-        return None
-
-    return url
 
 def sns_publish_message(sns_topic, params):
     template = Environment(
@@ -117,7 +93,7 @@ def lambda_handler(event, context):
     image_id=f"{ami_export_task['ExportImageTaskId']}.vmdk"
     export_bucket=f"{ami_export_task['S3ExportLocation']['S3Bucket']}"
     export_bucket_prefix=f"{ami_export_task['S3ExportLocation']['S3Prefix']}"
-    image_path=f"s3://{export_bucket}/exports/{export_bucket_prefix}"
+    image_path=f"s3://{export_bucket}/{export_bucket_prefix}{image_id}"
 
     logger.debug(f"image_id = {image_id}")
     logger.debug(f"export_bucket = {export_bucket}")
@@ -131,19 +107,14 @@ def lambda_handler(event, context):
     put_ssm_parameter(f"{ssm_path}/export/ImagePath", f"{image_path}")
     put_ssm_parameter(f"{ssm_path}/export/Date", f"{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
 
-    presign_s3_url = presign_url(export_bucket, export_bucket_prefix, 604800)
-
     params = {}
     params['ami_id'] = ami_id
     params['ami_name'] = ami_name
     params['vmdk_id'] = image_id
     params['s3_image_path'] = image_path
-    params['s3_presigned_url'] = presign_s3_url
     params['export_date'] = f"{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}"
 
     sns_publish_message(sns_topic, params)
-
-    event["presign_s3_url"] = presign_s3_url
     
     return {
         'statusCode': 200,

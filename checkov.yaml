@@ -1,0 +1,12 @@
+branch: master
+download-external-modules: true
+evaluate-variables: true
+external-modules-download-path: .external_modules
+framework: cloudformation
+output: cli
+directory:
+  - cdk.out
+skip-check:
+  - CKV_AWS_21    # Ensure the S3 bucket has versioning enabled
+  - CKV_AWS_173 # Check encryption settings for Lambda environmental variable
+  - CKV_AWS_116 # Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)
