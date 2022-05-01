@@ -254,7 +254,7 @@ class VmdkExportStack(core.Stack):
             id=f"amiDistributionLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/amidistribution"),
             handler="ami_distribution.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=amidistribution_lambda_role,
             timeout=self.LAMBDA_TIMEOUT_DEFAULT
         )
@@ -324,7 +324,7 @@ class VmdkExportStack(core.Stack):
             id=f"vmdkEntryPointLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/vmdkexportentrypoint"),
             handler="vmdkexportentrypoint_function.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=vmdk_entry_point_lambda_role,
             timeout=self.LAMBDA_TIMEOUT_DEFAULT
         )
@@ -357,7 +357,7 @@ class VmdkExportStack(core.Stack):
             id=f"imageBuilderPollLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/imagebuilderpoll"),
             handler="imagebuilderpoll_function.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=imagebuilderpoll_lambda_role,
             timeout=self.LAMBDA_TIMEOUT_DEFAULT
         )
@@ -399,7 +399,7 @@ class VmdkExportStack(core.Stack):
             scope=self,
             id=f"amiPublishMetadataLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/publishamimetadata"),
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             handler="publishamimetadata_function.lambda_handler",
             role=amipublishmetadata_lambda_role,
             environment={
@@ -441,7 +441,7 @@ class VmdkExportStack(core.Stack):
             id=f"vmImportRoleCreatorLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/createvmimportrole"),
             handler="createvmimportrole_function.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=vmimport_role_creator_role,
             timeout=self.LAMBDA_TIMEOUT_DEFAULT
         )
@@ -534,7 +534,7 @@ class VmdkExportStack(core.Stack):
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/vmdkexport"),
             handler="vmdkexport_function.lambda_handler",
             role=vmdkexport_role,
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             environment={
                 "EXPORT_BUCKET": f"{s3_bucket.bucket_name}",
                 "EXPORT_ROLE": f"{vm_import_role.role_name}"
@@ -578,7 +578,7 @@ class VmdkExportStack(core.Stack):
             id=f"vmdkCompletedLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/vmdkexportcompleted"),
             handler="vmdkexportcompleted_function.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=vmdkcompleted_lambda_role,
             timeout=self.LAMBDA_TIMEOUT_DEFAULT
         )
@@ -619,12 +619,13 @@ class VmdkExportStack(core.Stack):
         s3_bucket.grant_read_write(vmdkpublishmetadata_lambda_role)
 
         # Create vmdk metadata publishing lambda function
-        vmdkpublishmetadata_lambda = aws_lambda.Function(
+        vmdkpublishmetadata_lambda = aws_lambda_python.PythonFunction(
             scope=self,
             id=f"vmdkPublishMetadataLambda-{CdkUtils.stack_tag}",
-            code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/publishvmdkmetadata"),
-            handler="publishvmdkmetadata_function.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            entry="stacks/vmdkexport/resources/vmexport/publishvmdkmetadata",
+            index="publishvmdkmetadata_function.py",
+            handler="lambda_handler",
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=vmdkpublishmetadata_lambda_role,
             environment={
                 "PIPELINE_NAME": ami_share_pipeline.name,
@@ -769,7 +770,7 @@ class VmdkExportStack(core.Stack):
             id=f"vmdkNotifyLambda-{CdkUtils.stack_tag}",
             code=aws_lambda.Code.from_asset("stacks/vmdkexport/resources/vmexport/vmdknotify"),
             handler="vmdknotify_function.lambda_handler",
-            runtime=aws_lambda.Runtime.PYTHON_3_6,
+            runtime=aws_lambda.Runtime.PYTHON_3_9,
             role=vmdk_notify_lambda_role,
             environment={
                 "STATE_MACHINE_ARN": vmdkexport_state_machine.state_machine_arn

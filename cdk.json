@@ -18,8 +18,8 @@
   },
   "projectSettings": {
     "vpc": {
-      "vpc_id": "<<ADD_VPD_ID_HERE>>",
-      "subnet_id": "<<ADD_SUBNET_ID_HERE>>"
+      "vpc_id": "vpc-58db6321",
+      "subnet_id": "subnet-e91d2ab3"
     },
     "imagebuilder": {
       "baseImageArn": "amazon-linux-2-x86/2021.4.29",
@@ -28,7 +28,7 @@
         "t2.micro"
       ],
       "version": "1.0.0",
-      "imageBuilderEmailAddress": "<<ADD_EMAIL_ADDRESS_FOR_NOTIFICATION_HERE>>",
+      "imageBuilderEmailAddress": "aws-siemens-gameday-team2@protonmail.com",
       "extraTags": {
         "imagePipeline": "AMIBuilder"
       },
@@ -37,13 +37,13 @@
         "account2"
       ],
       "amiPublishingRegions": [
-        "<<ADD_AMI_PUBLISHING_REGION_HERE>>"
+        "eu-west-1"
       ],
       "amiPublishingTargetIds": [
-        "<<ADD_AMI_PUBLISHING_TARGET_ACCOUNT_IDS_HERE>>"
+        "582036921242"
       ],
       "amiSharingIds": [
-        "<<ADD_AMI_SHARING_ACCOUNT_IDS_HERE>>"
+        "582036921242"
       ]
     }
   }
