@@ -29,6 +29,7 @@ The code will only deploy resources into the *tooling* account. The existence of
 * [Executing the project](#executing-the-project)
 * [Clean up the project](#clean-up-the-project)
 * [Executing unit tests](#executing-unit-tests)
+* [Executing static code analysis tool](#executing-static-code-analysis-tool)
 * [Security](#security)
 * [License](#license)
 
@@ -256,6 +257,56 @@ python3 -m venv .venv
 source .venv/bin/activate
 cdk synth && python -m pytest -v -c ./tests/pytest.ini
 ```
+
+# Executing static code analysis tool
+
+The solution includes [Checkov](https://github.com/bridgecrewio/checkov) which is a static code analysis tool for infrastructure as code (IaC).
+
+The static code analysis tool for the project can be executed via the commands below:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+rm -fr cdk.out && cdk synth && checkov --config-file checkov.yaml
+```
+
+**NOTE:** The Checkov tool has been configured to skip certain checks.
+
+The Checkov configuration file, [checkov.yaml](checkov.yaml), contains a section named `skip-check`.
+
+```
+skip-check:
+  - CKV_AWS_7     # Ensure rotation for customer created CMKs is enabled
+  - CKV_AWS_18    # Ensure the S3 bucket has access logging enabled
+  - CKV_AWS_19    # Ensure the S3 bucket has server-side-encryption enabled
+  - CKV_AWS_20    # Ensure the S3 bucket does not allow READ permissions to everyone
+  - CKV_AWS_21    # Ensure the S3 bucket has versioning enabled
+  - CKV_AWS_23    # Ensure every security groups rule has a description
+  - CKV_AWS_24    # Ensure no security groups allow ingress from 0.0.0.0:0 to port 22
+  - CKV_AWS_25    # Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389
+  - CKV_AWS_26    # Ensure all data stored in the SNS topic is encrypted
+  - CKV_AWS_33    # Ensure KMS key policy does not contain wildcard (*) principal
+  - CKV_AWS_40    # Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)
+  - CKV_AWS_45    # Ensure no hard-coded secrets exist in lambda environment
+  - CKV_AWS_53    # Ensure S3 bucket has block public ACLS enabled
+  - CKV_AWS_54    # Ensure S3 bucket has block public policy enabled
+  - CKV_AWS_55    # Ensure S3 bucket has ignore public ACLs enabled
+  - CKV_AWS_56    # Ensure S3 bucket has 'restrict_public_bucket' enabled
+  - CKV_AWS_57    # Ensure the S3 bucket does not allow WRITE permissions to everyone
+  - CKV_AWS_60    # Ensure IAM role allows only specific services or principals to assume it
+  - CKV_AWS_61    # Ensure IAM role allows only specific principals in account to assume it
+  - CKV_AWS_107   # Ensure IAM policies does not allow credentials exposure
+  - CKV_AWS_108   # Ensure IAM policies does not allow data exfiltration
+  - CKV_AWS_109   # Ensure IAM policies does not allow permissions management without constraints
+  - CKV_AWS_110   # Ensure IAM policies does not allow privilege escalation
+  - CKV_AWS_111   # Ensure IAM policies does not allow write access without constraints
+  - CKV_AWS_116   # Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)
+  - CKV_AWS_173   # Check encryption settings for Lambda environmental variable
+```
+
+These checks represent best practices in AWS and should be enabled (or at the very least the security risk of not enabling the checks should be accepted and understood) for production systems. 
+
+In the context of this solution, these specific checks have not been remediated in order to focus on the core elements of the solution.
 
 # Security
 

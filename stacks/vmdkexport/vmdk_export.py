@@ -58,7 +58,7 @@ class VmdkExportStack(core.Stack):
             f"vmdk-export-bucket-{CdkUtils.stack_tag}",
             removal_policy=core.RemovalPolicy.DESTROY,
             auto_delete_objects=True,
-            versioned=False,
+            versioned=True,
             public_read_access=False,
             block_public_access=s3.BlockPublicAccess(
                 block_public_acls=True,
