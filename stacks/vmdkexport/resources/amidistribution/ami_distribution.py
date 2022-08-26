@@ -1,19 +1,32 @@
+#!/usr/bin/env python
+
+"""
+    ami_distribution.py:
+    CloudFormation Custom Resource Hanlder used to configure the
+    AMI distribution targets of the EC2 Image Builder instance
+    created by CDK.
+    
+    EC2 ImageBuilder AMI distribution setting targetAccountIds
+    is not supported by CloudFormation (as of September 2021).
+    https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-imagebuilder-distributionconfiguration.html
+
+    This lambda function uses Boto3 for EC2 ImageBuilder in order 
+    to set the AMI distribution settings which are currently missing from 
+    CloudFormation - specifically the targetAccountIds attribute
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/imagebuilder.html
+"""
+
 ##################################################
-## EC2 ImageBuilder AMI distribution setting targetAccountIds
-## is not supported by CloudFormation (as of September 2021).
-## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-imagebuilder-distributionconfiguration.html
-##
-## This lambda function uses Boto3 for EC2 ImageBuilder in order 
-## to set the AMI distribution settings which are currently missing from 
-## CloudFormation - specifically the targetAccountIds attribute
-## https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/imagebuilder.html
+## 
 ##################################################
 
-import os
-import boto3
-import botocore
 import json
 import logging
+import os
+
+import boto3
+import botocore
+
 
 def get_ssm_parameter(ssm_param_name: str, aws_ssm_region: str):
     ssm = boto3.client('ssm', region_name=aws_ssm_region)

@@ -1,12 +1,17 @@
-##################################################
-## Polling function which queries the AWS EC2 API
-## in order to determine if a specific AMI export
-## is in the completed state.
-##################################################
+#!/usr/bin/env python
 
-import boto3
+"""
+    vmdkexportcompleted_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    polls the VMImport/Export service in order to determine
+    when an export job has completed.
+"""
+
 import json
 import logging
+
+import boto3
+
 
 def lambda_handler(event, context):
     # set logging

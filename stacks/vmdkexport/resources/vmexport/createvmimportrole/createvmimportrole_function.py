@@ -1,18 +1,23 @@
-##################################################
-## Create the role required for vmimport/export operations
-## Role to be assumed for the VMDK export
-## This role requires a specific name; vmimport
-## As such, we use a custom resource to ensure that the role is created
-## and to prevent the CFN template from failing if the role already exists.
-## Provider that creates the role needed by the vmimport process
-## see https://docs.aws.amazon.com/vm-import/latest/userguide/vmie_prereqs.html#vmimport-role
-## see https://aws.amazon.com/premiumsupport/knowledge-center/ec2-export-vm-using-import-export/
-##################################################
+#!/usr/bin/env python
 
-import boto3
-from botocore.exceptions import ClientError
+"""
+    createvmimportrole_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    creates the role required for vmimport/export operations.
+
+    The role to be assumed for VMDK export requires a specific name; vmimport
+    As such, we use a custom resource to ensure that the role is created
+    and to prevent the CFN template from failing if the role already exists.
+
+    Provider that creates the role needed by the vmimport process
+    see https://docs.aws.amazon.com/vm-import/latest/userguide/vmie_prereqs.html#vmimport-role
+    see https://aws.amazon.com/premiumsupport/knowledge-center/ec2-export-vm-using-import-export/
+"""
+
 import json
 import logging
+
+import boto3
 
 # set logging
 logger = logging.getLogger()

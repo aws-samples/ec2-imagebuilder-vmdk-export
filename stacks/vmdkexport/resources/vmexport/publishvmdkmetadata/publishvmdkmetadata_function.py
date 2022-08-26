@@ -1,14 +1,21 @@
-##################################################
-## Publish VMDK export values
-##################################################
+#!/usr/bin/env python
 
-import os
-import boto3
-from botocore.exceptions import ClientError
+"""
+    publishvmdkmetadata_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    creates and publishes notifications to a SNS topic.
+    The notification contains details about the generated
+    AMI and a S3 bucket location where the exported VMDK file
+    can be downloaded.
+"""
+
 import json
 import logging
+import os
 from datetime import datetime
-from jinja2 import Environment, BaseLoader, select_autoescape
+
+import boto3
+from jinja2 import BaseLoader, Environment, select_autoescape
 
 # set logging
 logger = logging.getLogger()

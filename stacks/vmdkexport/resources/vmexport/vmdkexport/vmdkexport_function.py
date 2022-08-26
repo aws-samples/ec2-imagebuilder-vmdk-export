@@ -1,11 +1,18 @@
-##################################################
-## Export AMI to VMDK
-##################################################
+#!/usr/bin/env python
 
-import os
-import boto3
+"""
+    vmdkexport_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    executes the VMExport process in order to export an
+    AMI to VMDK format.
+"""
+
 import json
 import logging
+import os
+
+import boto3
+
 
 def lambda_handler(event, context):
     # set logging

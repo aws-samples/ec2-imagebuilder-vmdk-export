@@ -1,13 +1,17 @@
-##################################################
-## Publish AMI Create values to SSM parameter store
-##################################################
+#!/usr/bin/env python
 
-import os
-import boto3
-from botocore.exceptions import ClientError
+"""
+    publishamimetadata_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    publishes AMI creation metadata to SSM parameter store.
+"""
+
 import json
 import logging
+import os
 from datetime import datetime
+
+import boto3
 
 # set logging
 logger = logging.getLogger()

@@ -1,20 +1,30 @@
-from aws_cdk import (
-    core
-)
+#!/usr/bin/env python
 
-import os
+"""
+    CdkUtils.py:
+    Utility class that contains supporting functions for
+    CDK projects.
+"""
+
 import hashlib
-import re
 import json
+import os
+import re
+
+from aws_cdk import core
 from jsii.python import classproperty
 
 _STACK_TAG = None
 
 class CdkUtils():
+    """
+        Utility class that contains supporting functions for
+        CDK projects.
+    """
 
     @classproperty
     def stack_prefix(self) -> str:
-        return "ec2-imagebuilder-secure-proxy"
+        return "ec2-imagebuilder-vmdk-export"
 
     @staticmethod
     def scoped_stack_name(base_name: str) -> str:

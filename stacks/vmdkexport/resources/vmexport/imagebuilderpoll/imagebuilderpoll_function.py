@@ -1,12 +1,17 @@
-##################################################
-## Poll ImageBuilder API for AMI availability
-##################################################
+#!/usr/bin/env python
 
-import os
-import boto3
-from botocore.exceptions import ClientError
+"""
+    imagebuilderpoll_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    polls EC2 Image Builder to determine the availability of an AMI.
+"""
+
 import json
 import logging
+import os
+
+import boto3
+
 
 def lambda_handler(event, context):
     # set logging

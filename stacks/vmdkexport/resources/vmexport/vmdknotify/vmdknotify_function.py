@@ -1,12 +1,21 @@
+#!/usr/bin/env python
+
+"""
+    vmdkexportcompleted_function.py:
+    Lambda Handler which executes the AWS Step Functions State Machine
+    which controls the AMI -> VMDK export process.
+"""
+
 ##################################################
 ## Notify VMDK export request
 ##################################################
 
-import os
-import boto3
-from botocore.exceptions import ClientError
 import json
 import logging
+import os
+
+import boto3
+
 
 def lambda_handler(event, context):
     # set logging

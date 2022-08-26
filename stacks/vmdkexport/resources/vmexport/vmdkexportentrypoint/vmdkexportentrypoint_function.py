@@ -1,12 +1,14 @@
-##################################################
-## VMDKExport entry point
-## The State Machine is invoked via Lambda
-## Lambda needs to receive a Http Status Code 200
-## otherwise it will continue retrying the State Machine
-##################################################
+#!/usr/bin/env python
+
+"""
+    vmdkexportentrypoint_function.py:
+    AWS Step Functions State Machine Lambda Handler which 
+    serves as the entry point to the AMI -> VMDK export process.
+"""
 
 import json
 import logging
+
 
 def lambda_handler(event, context):
     # set logging

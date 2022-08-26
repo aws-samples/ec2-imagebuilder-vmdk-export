@@ -1,24 +1,31 @@
-from aws_cdk import (
-    core,
-    aws_imagebuilder as imagebuilder,
-    aws_iam as iam,
-    aws_sns as sns,
-    aws_sns_subscriptions as sns_subscriptions,
-    aws_ec2 as ec2,
-    aws_ssm as ssm,
-    aws_kms as kms,
-    aws_s3 as s3,
-    aws_lambda,
-    aws_lambda_python,
-    aws_stepfunctions as stepfunctions,
-    aws_stepfunctions_tasks as stepfunctions_tasks,
-    custom_resources
-)
+#!/usr/bin/env python
 
+"""
+    vmdk_export.py:
+    CDK Stack that creates and deploys the infrastructure
+    required for the ec2-imagebuilder-vmdk-export project.
+"""
+
+from aws_cdk import aws_ec2 as ec2
+from aws_cdk import aws_iam as iam
+from aws_cdk import aws_imagebuilder as imagebuilder
+from aws_cdk import aws_kms as kms
+from aws_cdk import aws_lambda, aws_lambda_python
+from aws_cdk import aws_s3 as s3
+from aws_cdk import aws_sns as sns
+from aws_cdk import aws_sns_subscriptions as sns_subscriptions
+from aws_cdk import aws_ssm as ssm
+from aws_cdk import aws_stepfunctions as stepfunctions
+from aws_cdk import aws_stepfunctions_tasks as stepfunctions_tasks
+from aws_cdk import core, custom_resources
 from utils.CdkUtils import CdkUtils
 
 
 class VmdkExportStack(core.Stack):
+    """
+        CDK Stack that creates and deploys the infrastructure
+        required for the ec2-imagebuilder-vmdk-export project.
+    """
 
     LAMBDA_TIMEOUT_DEFAULT = core.Duration.seconds(20)
 
