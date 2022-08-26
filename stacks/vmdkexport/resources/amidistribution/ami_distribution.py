@@ -9,12 +9,12 @@
     EC2 ImageBuilder AMI distribution setting targetAccountIds
     is not supported by CloudFormation (as of September 2021).
     https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-imagebuilder-distributionconfiguration.html
-
     This lambda function uses Boto3 for EC2 ImageBuilder in order 
     to set the AMI distribution settings which are currently missing from 
     CloudFormation - specifically the targetAccountIds attribute
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/imagebuilder.html
 """
+
 
 import json
 import logging
@@ -24,17 +24,21 @@ import boto3
 import botocore
 
 
-def get_ssm_parameter(ssm_param_name: str, aws_ssm_region: str):
+def get_ssm_parameter(
+        ssm_param_name: str, 
+        aws_ssm_region: str
+    ) -> str:
     ssm = boto3.client('ssm', region_name=aws_ssm_region)
     parameter = ssm.get_parameter(Name=ssm_param_name, WithDecryption=False)
     return parameter['Parameter']
 
+
 def get_distributions_configurations(
-        aws_distribution_regions, 
-        ami_distribution_name,
-        publishing_account_ids, 
-        sharing_account_ids
-    ):
+        aws_distribution_regions: list[str],
+        ami_distribution_name: str,
+        publishing_account_ids: list[str],
+        sharing_account_ids: list[str]
+    ) -> list[dict]:
 
     distribution_configs = []
 
@@ -58,6 +62,7 @@ def get_distributions_configurations(
         distribution_configs.append(distribution_config)
 
     return distribution_configs
+
 
 def lambda_handler(event, context):
     # set logging
@@ -86,7 +91,7 @@ def lambda_handler(event, context):
     if event['RequestType'] != 'Delete':
         try:
             client = boto3.client('imagebuilder')
-            response = client.update_distribution_configuration(
+            client.update_distribution_configuration(
                 distributionConfigurationArn=ami_distribution_arn,
                 description=f"AMI Distribution settings for: {imagebuiler_name}",
                 distributions=get_distributions_configurations(
@@ -105,5 +110,5 @@ def lambda_handler(event, context):
             'AmiDistributionArn': ami_distribution_arn
         }
     }
-    logger.info("Output: " + json.dumps(output))
+    logger.info(f"Output: {json.dumps(output)}")
     return output
