@@ -58,7 +58,7 @@ aws-cdk.lambda-layer-node-proxy-agent==1.154.0
 aws-cdk.region-info==1.154.0
 cattrs==1.8.0
 cdk-expects-matcher==0.1.2
-certifi==2021.5.30
+certifi==2023.7.22
 cffi==1.14.6
 charset-normalizer==2.0.6
 colorama==0.4.4
