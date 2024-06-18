@@ -88,7 +88,7 @@ six==1.16.0
 smmap==4.0.0
 toml==0.10.2
 typing-extensions==3.10.0.2
-urllib3==1.26.18
+urllib3==1.26.19
 websocket-client==1.2.1
 zope.event==4.5.0
 zope.interface==5.4.0
